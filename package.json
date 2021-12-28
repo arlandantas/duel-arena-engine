@@ -1,0 +1,25 @@
+{
+  "name": "duel-arena-engine",
+  "version": "1.0.0",
+  "description": "This project makes all calculations - Vehicles, bullets and coins positions - Users points - IA interactions",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arlandantas/duel-arena-engine.git"
+  },
+  "keywords": [
+    "ia",
+    "bot",
+    "js"
+  ],
+  "author": "Arlan Dantas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arlandantas/duel-arena-engine/issues"
+  },
+  "homepage": "https://github.com/arlandantas/duel-arena-engine#readme"
+}
