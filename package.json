@@ -2,7 +2,7 @@
   "name": "duel-arena-engine",
   "version": "1.0.0",
   "description": "This project makes all calculations - Vehicles, bullets and coins positions - Users points - IA interactions",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "start": "npx ts-node index.ts",
     "build": "tsc index.ts --outDir ./build",
