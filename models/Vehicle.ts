@@ -1,4 +1,4 @@
-import { degreeToRad } from "../helpers/math";
+import { degreeToRad, normalizeDegrees } from "../helpers/math";
 
 class Vehicle {
   private x: number = 0;
@@ -27,24 +27,24 @@ class Vehicle {
     ANTICLOCKWISE: 'ANTICLOCKWISE',
   }
 
-  setX (x: number) { this.x = x }
+  private setX (x: number) { this.x = x }
 
-  setY (y: number) { this.y = y }
+  private setY (y: number) { this.y = y }
 
   setSpeed (speed: number) { this.speed = speed }
   
-  setAngleSpeed (angle_speed: number) { this.angle_speed = angle_speed }
+  setAngleSpeed (angle_speed: number) { this.angle_speed = (angle_speed < 90 ? angle_speed : 90) }
   
-  setGunAngleSpeed (gun_angle_speed: number) { this.gun_angle_speed = gun_angle_speed }
+  setGunAngleSpeed (gun_angle_speed: number) { this.gun_angle_speed = (gun_angle_speed < 90 ? gun_angle_speed : 90) }
 
-  setAngle (angle: number) {
-    this.angle = angle;
-    this.angle_rad = degreeToRad(this.angle + 90);
+  private setAngle (angle: number) {
+    this.angle = normalizeDegrees(angle);
+    this.angle_rad = degreeToRad(this.angle);
   }
 
-  setGunAngle (gun_angle: number) {
-    this.gun_angle = gun_angle;
-    this.gun_angle_rad = degreeToRad(this.gun_angle + 90);
+  private setGunAngle (gun_angle: number) {
+    this.gun_angle = normalizeDegrees(gun_angle);
+    this.gun_angle_rad = degreeToRad(this.gun_angle);
   }
 
   move (direction: String = Vehicle.DIRECTIONS.FORWARD) {
