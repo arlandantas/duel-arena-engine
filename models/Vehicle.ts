@@ -60,6 +60,14 @@ class Vehicle {
     this.setGunAngle(this.gun_angle + (this.gun_angle_speed * (direction === Vehicle.DIRECTIONS.ANTICLOCKWISE ? -1 : 1)))
   }
 
+  getX() { return this.x }
+  getY() { return this.y }
+  getSpeed() { return this.speed }
+  getAngle() { return this.angle }
+  getAngleSpeed() { return this.angle_speed }
+  getGunAngle() { return this.gun_angle }
+  getGunAngleSpeed() { return this.gun_angle_speed }
+
 }
 
 export default Vehicle
