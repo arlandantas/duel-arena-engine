@@ -2,19 +2,27 @@ import Vehicle from './Vehicle';
 
 class World {
   
-  private vehicles: Array<Vehicle> = [];
+  private vehicles: WorldVehicles = {};
 
   constructor () {};
 
-  addVehicle (vehicle: Vehicle): World {
-    this.vehicles.push(vehicle);
-    return this;
+  addVehicle (vehicle: Vehicle): string {
+    const randomId = Math.random().toString(25);
+    this.vehicles[randomId] = vehicle;
+    return randomId;
   }
 
-  getVehicle (index: number): Vehicle {
-    return this.vehicles[index];
+  getVehicle (id: string): Vehicle {
+    return this.vehicles[id];
   }
 
+  getVehicles (): Array<Vehicle> {
+    return Object.values(this.vehicles);
+  }
+}
+
+interface WorldVehicles {
+  [key: string]: Vehicle
 }
 
 export default World
