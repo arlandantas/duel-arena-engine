@@ -1,8 +1,10 @@
+import Bullet from './Bullet';
 import Vehicle from './Vehicle';
 
 class World {
   
   private vehicles: WorldVehicles = {};
+  private bullets: Array<Bullet> = [];
 
   constructor () {};
 
@@ -21,6 +23,14 @@ class World {
 
   getVehicles (): Array<Vehicle> {
     return Object.values(this.vehicles);
+  }
+
+  addBullet (bullet: Bullet): void {
+    this.bullets.push(bullet);
+  }
+
+  getBullets (): Array<Bullet> {
+    return this.bullets;
   }
 }
 
