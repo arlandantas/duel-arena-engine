@@ -7,7 +7,6 @@ class World {
   
   private vehicles: WorldVehicles = {};
   private bullets: Array<Bullet> = [];
-  private vehicleControllers: Array<VehicleController> = [];
   private vehicleActionsOrder: Array<string> = [];
   private updateInterval: number|null = null;
   private executingActions: boolean = false;
