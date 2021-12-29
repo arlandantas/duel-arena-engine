@@ -18,6 +18,8 @@ class VehicleController {
 		this.actionListeners.forEach(listener => listener(action));
 	};
 
+	loop() { }
+
 	moveForward() {
 		this.addAction({ type: Vehicle.ACTIONS.MOVEFORWARD });
 	}

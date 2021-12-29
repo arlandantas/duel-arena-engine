@@ -7,6 +7,7 @@ class World {
   
   private vehicles: WorldVehicles = {};
   private bullets: Array<Bullet> = [];
+  private vehicleControllers: Array<VehicleController> = [];
   private vehicleActionsOrder: Array<string> = [];
   private updateInterval: number|null = null;
   private executingActions: boolean = false;
@@ -23,12 +24,14 @@ class World {
       this.getVehicle(controller.getVehicleId()).addAction(action);
       this.vehicleActionsOrder.push(controller.getVehicleId());
     });
+    this.vehicleControllers.push(controller);
   }
 
   executeActions () {
     if (this.executingActions) return;
 
     let currentActions = [ ...this.vehicleActionsOrder ];
+    this.vehicleActionsOrder = [];
 
     this.executingActions = true;
 
@@ -44,6 +47,12 @@ class World {
   }
 
   updateObjects () {
+    this.executeLoops();
+
+    if (!this.executingActions && this.vehicleActionsOrder.length > 0) {
+      this.executeActions();
+    }
+
     if (this.updatingObjects) return;
 
     this.updatingObjects = true;
@@ -53,10 +62,12 @@ class World {
     });
 
     this.updatingObjects = false;
+  }
 
-    if (!this.executingActions && this.vehicleActionsOrder.length > 0) {
-      this.executeActions();
-    }
+  executeLoops() {
+    this.vehicleControllers.forEach(controller => {
+      controller.loop();
+    });
   }
 
   addVehicle (vehicle: Vehicle): string {
