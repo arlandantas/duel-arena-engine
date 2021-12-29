@@ -13,11 +13,18 @@ class Vehicle {
   private gun_angle_rad: number = 0;
   private gun_angle_speed: number = 0;
 
-  constructor (x: number = 0, y: number = 0, angle: number = 90) {
+  public colors: VehicleColors = {
+    wheel: 'black',
+    gun: 'black',
+    tank: 'black'
+  }
+
+  constructor (x: number = 0, y: number = 0, angle: number = 90, colors?: VehicleColors) {
     this.setX(x)
     this.setY(y)
     this.setAngle(angle)
     this.setGunAngle(0)
+    this.colors = colors ?? this.colors;
   }
 
   static DIRECTIONS = {
@@ -68,6 +75,11 @@ class Vehicle {
   getGunAngle() { return this.gun_angle }
   getGunAngleSpeed() { return this.gun_angle_speed }
 
+}
+interface VehicleColors {
+  wheel: string,
+  gun: string,
+  tank: string
 }
 
 export default Vehicle

@@ -7,7 +7,10 @@ class World {
   constructor () {};
 
   addVehicle (vehicle: Vehicle): string {
-    const randomId = Math.random().toString(25);
+    let randomId = Math.random().toString(25);
+    while (this.vehicles[randomId]) {
+      randomId = Math.random().toString(25);
+    }
     this.vehicles[randomId] = vehicle;
     return randomId;
   }
