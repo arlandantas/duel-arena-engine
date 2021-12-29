@@ -54,7 +54,7 @@ class Vehicle {
   executeAction() {
     const currAction = this.actions.shift();
 
-    if (!currAction) throw new Error('Action list is empty')
+    if (!currAction) return;
 
     switch (currAction?.type) {
       case Vehicle.ACTIONS.MOVEFORWARD: 

@@ -12,9 +12,11 @@ class World {
   private executingActions: boolean = false;
   private updatingObjects: boolean = false;
 
-  constructor () {
-    this.updateInterval = setInterval(this.updateObjects, 10);
-  };
+  constructor () {};
+  
+  startUpdates() {
+    this.updateInterval = setInterval(() => this.updateObjects(), 10);
+  }
 
   addVehicleController (controller: VehicleController): void {
     controller.addListener((action: Action) => {
@@ -45,7 +47,7 @@ class World {
     if (this.updatingObjects) return;
 
     this.updatingObjects = true;
-    
+
     Object.values(this.vehicles).forEach( vehicle => {
       vehicle.update();
     });
