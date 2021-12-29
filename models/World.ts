@@ -1,4 +1,5 @@
 import VehicleController from '../controllers/VehicleController';
+import Action from '../interfaces/Action';
 import Bullet from './Bullet';
 import Vehicle from './Vehicle';
 
@@ -12,7 +13,7 @@ class World {
   constructor () {};
 
   addVehicleController (vehicle_id: string): void {
-    const vehicleController = new VehicleController(vehicle_id, (action: string) => {
+    const vehicleController = new VehicleController(vehicle_id, (action: Action) => {
       this.getVehicle(vehicle_id).addAction(action);
       this.vehicleActionsOrder.push(vehicle_id);
     })

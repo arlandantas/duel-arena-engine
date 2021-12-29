@@ -1,4 +1,5 @@
 import { degreeToRad, normalizeDegrees } from "../helpers/math";
+import Action from "../interfaces/Action";
 
 class Vehicle {
   private x: number = 0;
@@ -19,7 +20,7 @@ class Vehicle {
     tank: 'black'
   }
 
-  private actions: Array<string> = [];
+  private actions: Array<Action> = [];
 
   constructor (x: number = 0, y: number = 0, angle: number = 90, colors?: VehicleColors) {
     this.setX(x)
@@ -40,7 +41,7 @@ class Vehicle {
 
   private setY (y: number) { this.y = y }
 
-  addAction (action: string) { this.actions.push(action) };
+  addAction (action: Action) { this.actions.push(action) };
 
   setSpeed (speed: number) { this.speed = (speed < 30 ? speed : 30) }
   
@@ -51,14 +52,16 @@ class Vehicle {
   executeAction() {
     const currAction = this.actions.shift();
 
-    switch (currAction) {
+    if (!currAction) throw new Error('Action list is empty')
+
+    switch (currAction?.type) {
       case 'moveForward': 
         this.setSpeed(10);
         break;
       case 'moveBackwards':
         this.setSpeed(-10);
       default: 
-        throw new Error('Deu ruim cambada');
+        throw new Error('Action type not found');
     }
   }
 
