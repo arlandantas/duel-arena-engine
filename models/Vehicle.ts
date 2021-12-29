@@ -30,11 +30,13 @@ class Vehicle {
     this.colors = colors ?? this.colors;
   }
 
-  static DIRECTIONS = {
-    FORWARD: 'FORWARD',
-    BACKWARD: 'BACKWARD',
-    CLOCKWISE: 'CLOCKWISE',
-    ANTICLOCKWISE: 'ANTICLOCKWISE',
+  static ACTIONS = {
+    MOVEFORWARD: 'MOVEFORWARD',
+    MOVEBACKWARD: 'MOVEBACKWARD',
+    ROTATECLOCKWISE: 'ROTATECLOCKWISE',
+    ROTATEANTICLOCKWISE: 'ROTATEANTICLOCKWISE',
+    ROTATEGUNCLOCKWISE: 'ROTATEGUNCLOCKWISE',
+    ROTATEGUNANTICLOCKWISE: 'ROTATEGUNANTICLOCKWISE',
   }
 
   private setX (x: number) { this.x = x }
@@ -55,13 +57,41 @@ class Vehicle {
     if (!currAction) throw new Error('Action list is empty')
 
     switch (currAction?.type) {
-      case 'moveForward': 
+      case Vehicle.ACTIONS.MOVEFORWARD: 
         this.setSpeed(10);
         break;
-      case 'moveBackwards':
+      case Vehicle.ACTIONS.MOVEBACKWARD:
         this.setSpeed(-10);
+        break;
+      case Vehicle.ACTIONS.ROTATECLOCKWISE:
+        this.setAngleSpeed(30);
+        break;
+      case Vehicle.ACTIONS.ROTATEANTICLOCKWISE:
+        this.setAngleSpeed(-30);
+        break;
+      case Vehicle.ACTIONS.ROTATEGUNCLOCKWISE:
+        this.setGunAngleSpeed(30);
+        break;
+      case Vehicle.ACTIONS.ROTATEGUNANTICLOCKWISE:
+        this.setGunAngleSpeed(-30);
+        break;
       default: 
         throw new Error('Action type not found');
+    }
+  }
+
+  update () {
+    if (this.speed != 0) {
+      this.move();
+      this.setSpeed(0);
+    }
+    if (this.angle_speed != 0) {
+      this.rotate();
+      this.setAngleSpeed(0);
+    }
+    if (this.gun_angle_speed != 0) {
+      this.rotateGun();
+      this.setGunAngleSpeed(0);
     }
   }
 
@@ -80,12 +110,12 @@ class Vehicle {
     this.setX(this.x + (Math.cos(this.angle_rad) * this.speed));
   }
 
-  rotate (direction: String = Vehicle.DIRECTIONS.CLOCKWISE) {
-    this.setAngle(this.angle + (this.angle_speed * (direction === Vehicle.DIRECTIONS.ANTICLOCKWISE ? -1 : 1)))
+  rotate () {
+    this.setAngle(this.angle + this.angle_speed)
   }
 
-  rotateGun (direction: String = Vehicle.DIRECTIONS.CLOCKWISE) {
-    this.setGunAngle(this.gun_angle + (this.gun_angle_speed * (direction === Vehicle.DIRECTIONS.ANTICLOCKWISE ? -1 : 1)))
+  rotateGun () {
+    this.setGunAngle(this.gun_angle + this.gun_angle_speed)
   }
 
   getX() { return this.x }

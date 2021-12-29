@@ -48,7 +48,7 @@ class World {
     this.updatingObjects = true;
     
     Object.values(this.vehicles).forEach( vehicle => {
-      vehicle.move();
+      vehicle.update();
     });
 
     this.updatingObjects = false;
