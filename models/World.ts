@@ -17,11 +17,11 @@ class World {
     this.updateInterval = setInterval(this.updateObjects, 10);
   };
 
-  addVehicleController (vehicle_id: string): void {
-    const vehicleController = new VehicleController(vehicle_id, (action: Action) => {
-      this.getVehicle(vehicle_id).addAction(action);
-      this.vehicleActionsOrder.push(vehicle_id);
-    })
+  addVehicleController (controller: VehicleController): void {
+    controller.addListener((action: Action) => {
+      this.getVehicle(controller.getVehicleId()).addAction(action);
+      this.vehicleActionsOrder.push(controller.getVehicleId());
+    });
   }
 
   executeActions () {
