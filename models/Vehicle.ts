@@ -19,6 +19,8 @@ class Vehicle {
     tank: 'black'
   }
 
+  private actions: Array<string> = [];
+
   constructor (x: number = 0, y: number = 0, angle: number = 90, colors?: VehicleColors) {
     this.setX(x)
     this.setY(y)
@@ -38,11 +40,27 @@ class Vehicle {
 
   private setY (y: number) { this.y = y }
 
-  setSpeed (speed: number) { this.speed = speed }
+  addAction (action: string) { this.actions.push(action) };
+
+  setSpeed (speed: number) { this.speed = (speed < 30 ? speed : 30) }
   
   setAngleSpeed (angle_speed: number) { this.angle_speed = (angle_speed < 90 ? angle_speed : 90) }
   
   setGunAngleSpeed (gun_angle_speed: number) { this.gun_angle_speed = (gun_angle_speed < 90 ? gun_angle_speed : 90) }
+
+  executeAction() {
+    const currAction = this.actions.shift();
+
+    switch (currAction) {
+      case 'moveForward': 
+        this.setSpeed(10);
+        break;
+      case 'moveBackwards':
+        this.setSpeed(-10);
+      default: 
+        throw new Error('Deu ruim cambada');
+    }
+  }
 
   private setAngle (angle: number) {
     this.angle = normalizeDegrees(angle);
@@ -54,9 +72,9 @@ class Vehicle {
     this.gun_angle_rad = degreeToRad(this.gun_angle);
   }
 
-  move (direction: String = Vehicle.DIRECTIONS.FORWARD) {
-    this.setY(this.y + (Math.sin(this.angle_rad) * (direction === Vehicle.DIRECTIONS.BACKWARD ? -1 : 1) * this.speed));
-    this.setX(this.x + (Math.cos(this.angle_rad) * (direction === Vehicle.DIRECTIONS.BACKWARD ? -1 : 1) * this.speed));
+  move () {
+    this.setY(this.y + (Math.sin(this.angle_rad) * this.speed));
+    this.setX(this.x + (Math.cos(this.angle_rad) * this.speed));
   }
 
   rotate (direction: String = Vehicle.DIRECTIONS.CLOCKWISE) {
