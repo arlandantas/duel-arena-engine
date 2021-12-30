@@ -1,5 +1,6 @@
 import { degreeToRad, normalizeDegrees } from "../helpers/math";
 import Action from "./Action";
+import World from "./World";
 
 class Vehicle {
   private x: number = 0;
@@ -37,6 +38,7 @@ class Vehicle {
     ROTATEANTICLOCKWISE: 'ROTATEANTICLOCKWISE',
     ROTATEGUNCLOCKWISE: 'ROTATEGUNCLOCKWISE',
     ROTATEGUNANTICLOCKWISE: 'ROTATEGUNANTICLOCKWISE',
+    FIRE: 'FIRE',
   }
 
   private setX (x: number) { this.x = x }
@@ -51,33 +53,42 @@ class Vehicle {
   
   setGunAngleSpeed (gun_angle_speed: number) { this.gun_angle_speed = (gun_angle_speed < 90 ? gun_angle_speed : 90) }
 
-  executeAction() {
+  executeAction(): Action|null {
     const currAction = this.actions.shift();
 
-    if (!currAction) return;
+    if (!currAction) return null;
 
     switch (currAction.getType()) {
       case Vehicle.ACTIONS.MOVEFORWARD:
-        this.setSpeed(currAction.getParam(0, 10));
+        this.setSpeed(currAction.getParam('speed', 10));
         break;
       case Vehicle.ACTIONS.MOVEBACKWARD:
-        this.setSpeed(currAction.getParam(0, 10) * -1);
+        this.setSpeed(currAction.getParam('speed', 10) * -1);
         break;
       case Vehicle.ACTIONS.ROTATECLOCKWISE:
-        this.setAngleSpeed(currAction.getParam(0, 30));
+        this.setAngleSpeed(currAction.getParam('speed', 30));
         break;
       case Vehicle.ACTIONS.ROTATEANTICLOCKWISE:
-        this.setAngleSpeed(currAction.getParam(0, 30) * -1);
+        this.setAngleSpeed(currAction.getParam('speed', 30) * -1);
         break;
       case Vehicle.ACTIONS.ROTATEGUNCLOCKWISE:
-        this.setGunAngleSpeed(currAction.getParam(0, 30));
+        this.setGunAngleSpeed(currAction.getParam('speed', 30));
         break;
       case Vehicle.ACTIONS.ROTATEGUNANTICLOCKWISE:
-        this.setGunAngleSpeed(currAction.getParam(0, 30) * -1);
+        this.setGunAngleSpeed(currAction.getParam('speed', 30) * -1);
         break;
+      case Vehicle.ACTIONS.FIRE:
+        return new Action(World.ACTIONS.ADD_BULLET, {
+          angle: this.getGunAngle(),
+          x: this.getX(),
+          y: this.getY(),
+          speed: 50
+        });
       default: 
         throw new Error('Action type not found');
     }
+
+    return null;
   }
 
   update () {

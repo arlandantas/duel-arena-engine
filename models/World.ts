@@ -10,8 +10,12 @@ class World {
   private vehicleControllers: Array<VehicleController> = [];
   private vehicleActionsOrder: Array<string> = [];
   private updateInterval: number|null = null;
-  private executingActions: boolean = false;
+  private executingVehicleActions: boolean = false;
   private updatingObjects: boolean = false;
+
+  static ACTIONS = {
+    ADD_BULLET: 'ADD_BULLET',
+  };
 
   constructor () {};
   
@@ -27,30 +31,51 @@ class World {
     this.vehicleControllers.push(controller);
   }
 
-  executeActions () {
-    if (this.executingActions) return;
+  executeAction(action: Action, vehicle_id: string) {
+    switch (action.getType()) {
+      case World.ACTIONS.ADD_BULLET:
+        this.bullets.push(new Bullet(
+          action.getParam('x', 10),
+          action.getParam('y', 10),
+          action.getParam('angle', 0),
+          vehicle_id,
+          action.getParam('speed', 50),
+        ))
+        break;
+      default:
+        console.error("World action type not found", action.getType());
+    }
+  }
+
+  executeVehicleActions () {
+    if (this.executingVehicleActions) return;
 
     let currentActions = [ ...this.vehicleActionsOrder ];
     this.vehicleActionsOrder = [];
 
-    this.executingActions = true;
+    this.executingVehicleActions = true;
 
     while (currentActions.length > 0) {
       const vehicle_id = currentActions.shift();
       if (!vehicle_id) throw new Error('Empty vehicle id!');
 
       const vehicle = this.getVehicle(vehicle_id);
-      vehicle.executeAction();
+
+      const result_action = vehicle.executeAction();
+
+      if (result_action) {
+        this.executeAction(result_action, vehicle_id);
+      }
     }
 
-    this.executingActions = false;
+    this.executingVehicleActions = false;
   }
 
   updateObjects () {
     this.executeLoops();
 
-    if (!this.executingActions && this.vehicleActionsOrder.length > 0) {
-      this.executeActions();
+    if (!this.executingVehicleActions && this.vehicleActionsOrder.length > 0) {
+      this.executeVehicleActions();
     }
 
     if (this.updatingObjects) return;

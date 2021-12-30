@@ -23,6 +23,7 @@ class AIVehicleController extends VehicleController {
       'rotateAnticlockwise',
       'rotateGunClockwise',
       'rotateGunAnticlockwise',
+      'fire',
       `
       ${code}
 
@@ -39,7 +40,8 @@ class AIVehicleController extends VehicleController {
       (speed?: number) => this.rotateClockwise(speed),
       (speed?: number) => this.rotateAnticlockwise(speed),
       (speed?: number) => this.rotateGunClockwise(speed),
-      (speed?: number) => this.rotateGunAnticlockwise(speed)
+      (speed?: number) => this.rotateGunAnticlockwise(speed),
+      () => this.fire()
     );
   }
 
