@@ -86,8 +86,8 @@ class Vehicle {
       case Vehicle.ACTIONS.FIRE:
         return new Action(World.ACTIONS.ADD_BULLET, {
           angle: this.getGunAngle() + this.getAngle(),
-          x: this.getX() + Vehicle.SIZE.WIDTH / 2,
-          y: this.getY() + Vehicle.SIZE.HEIGHT / 2,
+          x: this.x + Vehicle.SIZE.WIDTH / 2,
+          y: this.y + Vehicle.SIZE.HEIGHT / 2,
           speed: 2
         });
       default: 
@@ -99,8 +99,8 @@ class Vehicle {
 
   getBoundaries(): Array<Position> {
     const originPosition = {
-      x: this.getX() + (Vehicle.SIZE.WIDTH / 2),
-      y: this.getY() + (Vehicle.SIZE.HEIGHT / 2),
+      x: this.x + (Vehicle.SIZE.WIDTH / 2),
+      y: this.y + (Vehicle.SIZE.HEIGHT / 2),
     }
     return [
       rotatePoint(
@@ -109,17 +109,17 @@ class Vehicle {
         this.angle_rad
       ),
       rotatePoint(
-        { x: this.getX() + Vehicle.SIZE.WIDTH, y: this.getY() },
+        { x: this.x + Vehicle.SIZE.WIDTH, y: this.y },
         originPosition,
         this.angle_rad
       ),
       rotatePoint(
-        { x: this.getX() + Vehicle.SIZE.WIDTH, y: this.getY() + Vehicle.SIZE.HEIGHT },
+        { x: this.x + Vehicle.SIZE.WIDTH, y: this.y + Vehicle.SIZE.HEIGHT },
         originPosition,
         this.angle_rad
       ),
       rotatePoint(
-        { x: this.getX(), y: this.getY() + Vehicle.SIZE.HEIGHT },
+        { x: this.x, y: this.y + Vehicle.SIZE.HEIGHT },
         originPosition,
         this.angle_rad
       ),
@@ -165,8 +165,6 @@ class Vehicle {
   }
 
   getPosition(): Position { return { x: this.x, y: this.y } }
-  getX() { return this.x }
-  getY() { return this.y }
   getSpeed() { return this.speed }
   getAngle() { return this.angle }
   getAngleSpeed() { return this.angle_speed }
