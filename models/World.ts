@@ -3,6 +3,7 @@ import Bullet from './Bullet';
 import Vehicle from './Vehicle';
 import Action from './Action';
 import { checkBoundariesOvelap } from '../helpers/math';
+import { Position } from '..';
 
 class World {
 
@@ -13,12 +14,17 @@ class World {
   private updateInterval: number|null = null;
   private executingVehicleActions: boolean = false;
   private updatingObjects: boolean = false;
+  private width = 500;
+  private height = 500;
 
   static ACTIONS = {
     ADD_BULLET: 'ADD_BULLET',
   };
 
-  constructor () {};
+  constructor (width: number = 500, height: number = 500) {
+    this.width = width;
+    this.height = height;
+  };
   
   startUpdates() {
     this.updateInterval = setInterval(() => this.updateObjects(), 10);
@@ -106,6 +112,23 @@ class World {
         }
       });
     });
+
+    this.bullets.forEach((bullet, k) => {
+      const bulletPosition = bullet.getPosition();
+      if (
+        (bulletPosition.x < 0 - Bullet.RADIUS) ||
+        (bulletPosition.y < 0 - Bullet.RADIUS) ||
+        (bulletPosition.x > this.width + Bullet.RADIUS) ||
+        (bulletPosition.y > this.height + Bullet.RADIUS)
+      ) {
+        return this.bullets.splice(k, 1);
+      }
+
+      const bulletBoundaries = bullet.getBoundaries();
+      if (checkBoundariesOvelap(this.getBoundaries(), bulletBoundaries)) {
+        return this.bullets.splice(k, 1);
+      }
+    });
   }
 
   executeLoops() {
@@ -137,6 +160,23 @@ class World {
 
   getBullets (): Array<Bullet> {
     return this.bullets;
+  }
+
+  getWidth (): number {
+    return this.width;
+  }
+
+  getHeight (): number {
+    return this.height;
+  }
+
+  getBoundaries (): Array<Position> {
+    return [
+      { x: 0, y: 0 },
+      { x: this.width, y: 0 },
+      { x: this.width, y: this.height },
+      { x: 0, y: this.height },
+    ];
   }
 }
 

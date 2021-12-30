@@ -87,7 +87,7 @@ class Vehicle {
       case Vehicle.ACTIONS.FIRE:
         const outPoint = rotatePoint(
           {
-            x: this.x + Vehicle.SIZE.WIDTH + Bullet.RADIUS,
+            x: this.x + Vehicle.SIZE.WIDTH + Bullet.RADIUS + 5,
             y: this.y + Vehicle.SIZE.HEIGHT / 2
           },
           {
