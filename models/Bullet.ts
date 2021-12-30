@@ -1,4 +1,4 @@
-import { degreeToRad } from "../helpers/math";
+import { degreeToRad, rotatePoint } from "../helpers/math";
 import Position from "../interfaces/Position";
 
 class Bullet {
@@ -9,12 +9,14 @@ class Bullet {
   private angle_rad: number = 0;
   private vehicle_id: string = '?';
 
+  static RADIUS = 10;
+
   constructor (
     x: number = 0,
     y: number = 0,
     angle: number = 0,
     vehicle_id: string = '?',
-    speed: number = 2,
+    speed: number = 10,
   ) {
     this.x = x;
     this.y = y;
@@ -36,6 +38,26 @@ class Bullet {
   update () {
     this.y = this.y + (Math.sin(this.angle_rad) * this.speed);
     this.x = this.x + (Math.cos(this.angle_rad) * this.speed);
+  }
+
+  getBoundaries(): Array<Position> {
+    let boundaries: Array<Position> = [];
+
+    const initialPoint: Position = {
+      x: this.x - Bullet.RADIUS,
+      y: this.y
+    };
+    const currentPosition: Position = this.getPosition();
+
+    for (let i = 0; i < 2; i += 0.2) {
+      boundaries.push(rotatePoint(
+        initialPoint,
+        currentPosition,
+        Math.PI * i
+      ));
+    }
+
+    return boundaries;
   }
   
 }
