@@ -2,9 +2,10 @@ import VehicleController from '../controllers/VehicleController';
 import Bullet from './Bullet';
 import Vehicle from './Vehicle';
 import Action from './Action';
+import { checkBoundariesOvelap } from '../helpers/math';
 
 class World {
-  
+
   private vehicles: WorldVehicles = {};
   private bullets: Array<Bullet> = [];
   private vehicleControllers: Array<VehicleController> = [];
@@ -86,11 +87,25 @@ class World {
       vehicle.update();
     });
 
-    Object.values(this.bullets).forEach(bullet => {
+    this.bullets.forEach(bullet => {
       bullet.update();
     });
 
+    this.checkCollisions();
+
     this.updatingObjects = false;
+  }
+
+  checkCollisions() {
+    Object.values(this.vehicles).forEach(vehicle => {
+      const vehicleBoundaries = vehicle.getBoundaries();
+      this.bullets.forEach((bullet, k) => {
+        const bulletBoundaries = bullet.getBoundaries();
+        if (checkBoundariesOvelap(vehicleBoundaries, bulletBoundaries)) {
+          this.bullets.splice(k, 1);
+        }
+      });
+    });
   }
 
   executeLoops() {

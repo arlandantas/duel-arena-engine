@@ -2,6 +2,7 @@ import { degreeToRad, normalizeDegrees, rotatePoint } from "../helpers/math";
 import Position from "../interfaces/Position";
 import Action from "./Action";
 import World from "./World";
+import Bullet from "./Bullet";
 
 class Vehicle {
   private x: number = 0;
@@ -84,10 +85,21 @@ class Vehicle {
         this.setGunAngleSpeed(currAction.getParam('speed', 30) * -1);
         break;
       case Vehicle.ACTIONS.FIRE:
+        const outPoint = rotatePoint(
+          {
+            x: this.x + Vehicle.SIZE.WIDTH + Bullet.RADIUS,
+            y: this.y + Vehicle.SIZE.HEIGHT / 2
+          },
+          {
+            x: this.x + Vehicle.SIZE.WIDTH / 2,
+            y: this.y + Vehicle.SIZE.HEIGHT / 2
+          },
+          this.gun_angle_rad + this.angle_rad
+        );
         return new Action(World.ACTIONS.ADD_BULLET, {
-          angle: this.getGunAngle() + this.getAngle(),
-          x: this.x + Vehicle.SIZE.WIDTH / 2,
-          y: this.y + Vehicle.SIZE.HEIGHT / 2,
+          angle: this.gun_angle + this.angle,
+          x: outPoint.x,
+          y: outPoint.y,
           speed: 2
         });
       default: 
