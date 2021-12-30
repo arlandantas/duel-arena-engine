@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "start": "npx ts-node index.ts",
+    "watch": "tsc -w",
     "build": "tsc index.ts --outDir ./build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
