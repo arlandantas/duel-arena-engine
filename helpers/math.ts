@@ -55,7 +55,7 @@ function checkLineOverlap(a: Array<Position>, b: Array<Position>): boolean {
 }
 
 function isPointInLine(point: Position, lineA: Position, lineB: Position): boolean {
-  return getPointDistance(lineA, lineB) == getPointDistance(lineA, point) + getPointDistance(lineB, point);
+  return Math.abs(getPointDistance(lineA, lineB) - getPointDistance(lineA, point) - getPointDistance(lineB, point)) < 0.01;
 }
 
 function getPointDistance(a: Position, b: Position): number {
