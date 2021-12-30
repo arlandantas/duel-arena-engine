@@ -1,5 +1,5 @@
 import { degreeToRad, normalizeDegrees } from "../helpers/math";
-import Action from "../interfaces/Action";
+import Action from "./Action";
 
 class Vehicle {
   private x: number = 0;
@@ -56,24 +56,24 @@ class Vehicle {
 
     if (!currAction) return;
 
-    switch (currAction?.type) {
-      case Vehicle.ACTIONS.MOVEFORWARD: 
-        this.setSpeed(10);
+    switch (currAction.getType()) {
+      case Vehicle.ACTIONS.MOVEFORWARD:
+        this.setSpeed(currAction.getParam(0, 10));
         break;
       case Vehicle.ACTIONS.MOVEBACKWARD:
-        this.setSpeed(-10);
+        this.setSpeed(currAction.getParam(0, 10) * -1);
         break;
       case Vehicle.ACTIONS.ROTATECLOCKWISE:
-        this.setAngleSpeed(30);
+        this.setAngleSpeed(currAction.getParam(0, 30));
         break;
       case Vehicle.ACTIONS.ROTATEANTICLOCKWISE:
-        this.setAngleSpeed(-30);
+        this.setAngleSpeed(currAction.getParam(0, 30) * -1);
         break;
       case Vehicle.ACTIONS.ROTATEGUNCLOCKWISE:
-        this.setGunAngleSpeed(30);
+        this.setGunAngleSpeed(currAction.getParam(0, 30));
         break;
       case Vehicle.ACTIONS.ROTATEGUNANTICLOCKWISE:
-        this.setGunAngleSpeed(-30);
+        this.setGunAngleSpeed(currAction.getParam(0, 30) * -1);
         break;
       default: 
         throw new Error('Action type not found');

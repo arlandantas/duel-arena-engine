@@ -1,7 +1,7 @@
 import VehicleController from '../controllers/VehicleController';
-import Action from '../interfaces/Action';
 import Bullet from './Bullet';
 import Vehicle from './Vehicle';
+import Action from './Action';
 
 class World {
   

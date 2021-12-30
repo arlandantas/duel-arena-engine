@@ -1,5 +1,5 @@
 import { Vehicle } from "..";
-import Action from "../interfaces/Action";
+import Action from "../models/Action";
 
 class VehicleController {
 	private vehicle_id: string = '';
@@ -20,28 +20,28 @@ class VehicleController {
 
 	loop() { }
 
-	moveForward() {
-		this.addAction({ type: Vehicle.ACTIONS.MOVEFORWARD });
+	moveForward(speed: number = 10) {
+		this.addAction(new Action(Vehicle.ACTIONS.MOVEFORWARD, speed));
 	}
 
-	moveBackward() {
-		this.addAction({ type: Vehicle.ACTIONS.MOVEBACKWARD });
+	moveBackward(speed: number = 10) {
+		this.addAction(new Action(Vehicle.ACTIONS.MOVEBACKWARD, speed));
 	}
 
-	rotateClockwise() {
-		this.addAction({ type: Vehicle.ACTIONS.ROTATECLOCKWISE });
+	rotateClockwise(speed: number = 30) {
+		this.addAction(new Action(Vehicle.ACTIONS.ROTATECLOCKWISE, speed));
 	}
 
-	rotateAnticlockwise() {
-		this.addAction({ type: Vehicle.ACTIONS.ROTATEANTICLOCKWISE });
+	rotateAnticlockwise(speed: number = 30) {
+		this.addAction(new Action(Vehicle.ACTIONS.ROTATEANTICLOCKWISE, speed));
 	}
 
-	rotateGunClockwise() {
-		this.addAction({ type: Vehicle.ACTIONS.ROTATEGUNCLOCKWISE });
+	rotateGunClockwise(speed: number = 30) {
+		this.addAction(new Action(Vehicle.ACTIONS.ROTATEGUNCLOCKWISE, speed));
 	}
 
-	rotateGunAnticlockwise() {
-		this.addAction({ type: Vehicle.ACTIONS.ROTATEGUNANTICLOCKWISE });
+	rotateGunAnticlockwise(speed: number = 30) {
+		this.addAction(new Action(Vehicle.ACTIONS.ROTATEGUNANTICLOCKWISE, speed));
 	}
 
 	getVehicleId(): string { return this.vehicle_id }

@@ -33,13 +33,13 @@ class AIVehicleController extends VehicleController {
       `
     );
     return codeFunction(
-      () => this.moveForward(),
-      () => this.moveForward(),
-      () => this.moveBackward(),
-      () => this.rotateClockwise(),
-      () => this.rotateAnticlockwise(),
-      () => this.rotateGunClockwise(),
-      () => this.rotateGunAnticlockwise()
+      (speed?: number) => this.moveForward(speed),
+      (speed?: number) => this.moveForward(speed),
+      (speed?: number) => this.moveBackward(speed),
+      (speed?: number) => this.rotateClockwise(speed),
+      (speed?: number) => this.rotateAnticlockwise(speed),
+      (speed?: number) => this.rotateGunClockwise(speed),
+      (speed?: number) => this.rotateGunAnticlockwise(speed)
     );
   }
 
