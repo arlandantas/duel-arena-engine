@@ -1,4 +1,5 @@
-import { degreeToRad, normalizeDegrees } from "../helpers/math";
+import { degreeToRad, normalizeDegrees, rotatePoint } from "../helpers/math";
+import Position from "../interfaces/Position";
 import Action from "./Action";
 import World from "./World";
 
@@ -41,6 +42,11 @@ class Vehicle {
     FIRE: 'FIRE',
   }
 
+  static SIZE = {
+    WIDTH: 40,
+    HEIGHT: 40
+  };
+
   private setX (x: number) { this.x = x }
 
   private setY (y: number) { this.y = y }
@@ -80,8 +86,8 @@ class Vehicle {
       case Vehicle.ACTIONS.FIRE:
         return new Action(World.ACTIONS.ADD_BULLET, {
           angle: this.getGunAngle() + this.getAngle(),
-          x: this.getX() + 20,
-          y: this.getY() + 20,
+          x: this.getX() + Vehicle.SIZE.WIDTH / 2,
+          y: this.getY() + Vehicle.SIZE.HEIGHT / 2,
           speed: 2
         });
       default: 
@@ -89,6 +95,35 @@ class Vehicle {
     }
 
     return null;
+  }
+
+  getBoundaries(): Array<Position> {
+    const originPosition = {
+      x: this.getX() + (Vehicle.SIZE.WIDTH / 2),
+      y: this.getY() + (Vehicle.SIZE.HEIGHT / 2),
+    }
+    return [
+      rotatePoint(
+        this.getPosition(),
+        originPosition,
+        this.angle_rad
+      ),
+      rotatePoint(
+        { x: this.getX() + Vehicle.SIZE.WIDTH, y: this.getY() },
+        originPosition,
+        this.angle_rad
+      ),
+      rotatePoint(
+        { x: this.getX() + Vehicle.SIZE.WIDTH, y: this.getY() + Vehicle.SIZE.HEIGHT },
+        originPosition,
+        this.angle_rad
+      ),
+      rotatePoint(
+        { x: this.getX(), y: this.getY() + Vehicle.SIZE.HEIGHT },
+        originPosition,
+        this.angle_rad
+      ),
+    ];
   }
 
   update () {
@@ -129,6 +164,7 @@ class Vehicle {
     this.setGunAngle(this.gun_angle + this.gun_angle_speed)
   }
 
+  getPosition(): Position { return { x: this.x, y: this.y } }
   getX() { return this.x }
   getY() { return this.y }
   getSpeed() { return this.speed }
