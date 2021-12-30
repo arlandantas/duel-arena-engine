@@ -9,7 +9,7 @@ class Bullet {
   private angle_rad: number = 0;
   private vehicle_id: string = '?';
 
-  static RADIUS = 10;
+  static RADIUS = 2;
 
   constructor (
     x: number = 0,
