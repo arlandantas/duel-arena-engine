@@ -86,6 +86,10 @@ class World {
       vehicle.update();
     });
 
+    Object.values(this.bullets).forEach(bullet => {
+      bullet.update();
+    });
+
     this.updatingObjects = false;
   }
 

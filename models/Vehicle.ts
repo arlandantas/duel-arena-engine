@@ -79,10 +79,10 @@ class Vehicle {
         break;
       case Vehicle.ACTIONS.FIRE:
         return new Action(World.ACTIONS.ADD_BULLET, {
-          angle: this.getGunAngle(),
-          x: this.getX(),
-          y: this.getY(),
-          speed: 50
+          angle: this.getGunAngle() + this.getAngle(),
+          x: this.getX() + 20,
+          y: this.getY() + 20,
+          speed: 2
         });
       default: 
         throw new Error('Action type not found');

@@ -14,7 +14,7 @@ class Bullet {
     y: number = 0,
     angle: number = 0,
     vehicle_id: string = '?',
-    speed: number = 50,
+    speed: number = 2,
   ) {
     this.x = x;
     this.y = y;
@@ -24,14 +24,19 @@ class Bullet {
     this.vehicle_id = vehicle_id;
   }
 
-  public getPosition(): Position {
+  getPosition(): Position {
     return { x: this.x, y: this.y };
   }
 
-  public getSpeed(): number { return this.speed; }
-  public getAngle(): number { return this.angle; }
-  public getAngleRad(): number { return this.angle_rad; }
-  public getVehicleId(): string { return this.vehicle_id; }
+  getSpeed(): number { return this.speed; }
+  getAngle(): number { return this.angle; }
+  getAngleRad(): number { return this.angle_rad; }
+  getVehicleId(): string { return this.vehicle_id; }
+
+  update () {
+    this.y = this.y + (Math.sin(this.angle_rad) * this.speed);
+    this.x = this.x + (Math.cos(this.angle_rad) * this.speed);
+  }
   
 }
 
