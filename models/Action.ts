@@ -1,18 +1,20 @@
+import ActionParams from '../interfaces/ActionParams';
+
 class Action {
   private type: string;
-  private params: Array<any> = [];
+  private params: ActionParams = {};
 
-  constructor (type: string, ...params: Array<any>) {
+  constructor (type: string, params: ActionParams = {}) {
     this.type = type;
     this.params = params;
   }
 
   getType(): string { return this.type }
 
-  getParams(): Array<any> { return this.params }
+  getParams(): ActionParams { return this.params }
 
-  getParam(index: number, default_value: any = undefined): any {
-    return this.params[index] ?? default_value
+  getParam(param_name: string, default_value: any = undefined): any {
+    return this.params[param_name] ?? default_value
   }
 }
 

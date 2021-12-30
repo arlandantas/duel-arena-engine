@@ -21,27 +21,31 @@ class VehicleController {
 	loop() { }
 
 	moveForward(speed: number = 10) {
-		this.addAction(new Action(Vehicle.ACTIONS.MOVEFORWARD, speed));
+		this.addAction(new Action(Vehicle.ACTIONS.MOVEFORWARD, { speed }));
 	}
 
 	moveBackward(speed: number = 10) {
-		this.addAction(new Action(Vehicle.ACTIONS.MOVEBACKWARD, speed));
+		this.addAction(new Action(Vehicle.ACTIONS.MOVEBACKWARD, { speed }));
 	}
 
 	rotateClockwise(speed: number = 30) {
-		this.addAction(new Action(Vehicle.ACTIONS.ROTATECLOCKWISE, speed));
+		this.addAction(new Action(Vehicle.ACTIONS.ROTATECLOCKWISE, { speed }));
 	}
 
 	rotateAnticlockwise(speed: number = 30) {
-		this.addAction(new Action(Vehicle.ACTIONS.ROTATEANTICLOCKWISE, speed));
+		this.addAction(new Action(Vehicle.ACTIONS.ROTATEANTICLOCKWISE, { speed }));
 	}
 
 	rotateGunClockwise(speed: number = 30) {
-		this.addAction(new Action(Vehicle.ACTIONS.ROTATEGUNCLOCKWISE, speed));
+		this.addAction(new Action(Vehicle.ACTIONS.ROTATEGUNCLOCKWISE, { speed }));
 	}
 
 	rotateGunAnticlockwise(speed: number = 30) {
-		this.addAction(new Action(Vehicle.ACTIONS.ROTATEGUNANTICLOCKWISE, speed));
+		this.addAction(new Action(Vehicle.ACTIONS.ROTATEGUNANTICLOCKWISE, { speed }));
+	}
+
+	fire() {
+		this.addAction(new Action(Vehicle.ACTIONS.FIRE));
 	}
 
 	getVehicleId(): string { return this.vehicle_id }
