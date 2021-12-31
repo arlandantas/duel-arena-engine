@@ -103,9 +103,11 @@ class World {
   }
 
   checkCollisions() {
-    Object.values(this.vehicles).forEach(vehicle => {
+    Object.entries(this.vehicles).forEach(([vehicle_id, vehicle]) => {
       const vehicleBoundaries = vehicle.getBoundaries();
       this.bullets.forEach((bullet, k) => {
+        if (bullet.getVehicleId() == vehicle_id) return;
+        
         const bulletBoundaries = bullet.getBoundaries();
         if (checkBoundariesOvelap(vehicleBoundaries, bulletBoundaries)) {
           this.bullets.splice(k, 1);
