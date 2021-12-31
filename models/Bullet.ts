@@ -41,23 +41,12 @@ class Bullet {
   }
 
   getBoundaries(): Array<Position> {
-    let boundaries: Array<Position> = [];
-
-    const initialPoint: Position = {
-      x: this.x - Bullet.RADIUS,
-      y: this.y
-    };
-    const currentPosition: Position = this.getPosition();
-
-    for (let i = 0; i < 2; i += 0.2) {
-      boundaries.push(rotatePoint(
-        initialPoint,
-        currentPosition,
-        Math.PI * i
-      ));
-    }
-
-    return boundaries;
+    return [
+      { x: this.x - Bullet.RADIUS, y: this.y - Bullet.RADIUS },
+      { x: this.x + Bullet.RADIUS, y: this.y - Bullet.RADIUS },
+      { x: this.x + Bullet.RADIUS, y: this.y + Bullet.RADIUS },
+      { x: this.x - Bullet.RADIUS, y: this.y + Bullet.RADIUS },
+    ];
   }
   
 }
