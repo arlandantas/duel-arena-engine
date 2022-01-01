@@ -27,7 +27,7 @@ class Heart extends DamageRemover {
       { x: this.x, y: this.y },
       { x: this.x + 3, y: this.y - 3 },
       { x: this.x + 6, y: this.y },
-      { x: this.x, y: this.y + 3 },
+      { x: this.x, y: this.y + 6 },
       { x: this.x - 6, y: this.y },
       { x: this.x - 3, y: this.y - 3 },
     ];

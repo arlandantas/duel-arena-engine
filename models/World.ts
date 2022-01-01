@@ -188,6 +188,10 @@ class World {
     return this.bullets;
   }
 
+  getHearts (): Array<Heart> {
+    return this.hearts;
+  }
+
   getWidth (): number {
     return this.width;
   }
