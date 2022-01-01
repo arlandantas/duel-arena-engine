@@ -1,10 +1,11 @@
 import { degreeToRad, normalizeDegrees, rotatePoint } from "../helpers/math";
 import Position from "../interfaces/Position";
+import Damageable from "../interfaces/Damageable";
 import Action from "./Action";
 import World from "./World";
 import Bullet from "./Bullet";
 
-class Vehicle {
+class Vehicle extends Damageable {
   private x: number = 0;
   private y: number = 0;
   private speed: number = 0;
@@ -17,6 +18,8 @@ class Vehicle {
   private gun_angle_rad: number = 0;
   private gun_angle_speed: number = 0;
 
+  private vehicle_id: string = ''
+
   public colors: VehicleColors = {
     wheel: 'black',
     gun: 'black',
@@ -26,6 +29,7 @@ class Vehicle {
   private actions: Array<Action> = [];
 
   constructor (x: number = 0, y: number = 0, angle: number = 90, colors?: VehicleColors) {
+    super(100)
     this.setX(x)
     this.setY(y)
     this.setAngle(angle)
@@ -54,11 +58,19 @@ class Vehicle {
 
   addAction (action: Action) { this.actions.push(action) };
 
-  setSpeed (speed: number) { this.speed = (speed < 30 ? speed : 30) }
+  setVehicleId (vehicle_id: string) { this.vehicle_id = vehicle_id }
+
+  setSpeed (speed: number) {
+    this.speed = (speed < 30 ? speed : 30)
+  }
   
-  setAngleSpeed (angle_speed: number) { this.angle_speed = (angle_speed < 90 ? angle_speed : 90) }
+  setAngleSpeed (angle_speed: number) {
+    this.angle_speed = (angle_speed < 90 ? angle_speed : 90)
+  }
   
-  setGunAngleSpeed (gun_angle_speed: number) { this.gun_angle_speed = (gun_angle_speed < 90 ? gun_angle_speed : 90) }
+  setGunAngleSpeed (gun_angle_speed: number) {
+    this.gun_angle_speed = (gun_angle_speed < 90 ? gun_angle_speed : 90)
+  }
 
   executeAction(): Action|null {
     const currAction = this.actions.shift();
@@ -182,6 +194,7 @@ class Vehicle {
   getAngleSpeed() { return this.angle_speed }
   getGunAngle() { return this.gun_angle }
   getGunAngleSpeed() { return this.gun_angle_speed }
+  getVehicleId() { return this.vehicle_id }
 
 }
 interface VehicleColors {

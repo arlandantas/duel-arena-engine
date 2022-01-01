@@ -103,16 +103,19 @@ class World {
   }
 
   checkCollisions() {
-    Object.entries(this.vehicles).forEach(([vehicle_id, vehicle]) => {
+    Object.values(this.vehicles).forEach((vehicle) => {
       const vehicleBoundaries = vehicle.getBoundaries();
       this.bullets.forEach((bullet, k) => {
-        if (bullet.getVehicleId() == vehicle_id) return;
-        
         const bulletBoundaries = bullet.getBoundaries();
         if (checkBoundariesOvelap(vehicleBoundaries, bulletBoundaries)) {
+          vehicle.applyDamage(bullet.getDamageToApply(vehicle))
           this.bullets.splice(k, 1);
         }
       });
+      if (vehicle.getLife() <= 0) {
+        // TODO: Remove vehicleController
+        delete this.vehicles[vehicle.getVehicleId()]
+      }
     });
 
     this.bullets.forEach((bullet, k) => {
@@ -145,6 +148,7 @@ class World {
       randomId = Math.random().toString(25);
     }
     this.vehicles[randomId] = vehicle;
+    vehicle.setVehicleId(randomId)
     return randomId;
   }
 

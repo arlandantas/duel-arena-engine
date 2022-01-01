@@ -1,7 +1,10 @@
 import { degreeToRad, rotatePoint } from "../helpers/math";
 import Position from "../interfaces/Position";
+import Damager from "../interfaces/Damager";
+import Damageable from "../interfaces/Damageable";
+import Vehicle from './Vehicle';
 
-class Bullet {
+class Bullet extends Damager {
   private x: number = 0;
   private y: number = 0;
   private speed: number = 0;
@@ -18,6 +21,7 @@ class Bullet {
     vehicle_id: string = '?',
     speed: number = 10,
   ) {
+    super()
     this.x = x;
     this.y = y;
     this.speed = speed;
@@ -48,6 +52,15 @@ class Bullet {
       { x: this.x - Bullet.RADIUS, y: this.y },
     ];
   }
+
+  getDamageToApply(damageable: Damageable): number {
+    if (damageable instanceof Vehicle) {
+      if (damageable.getVehicleId() == this.vehicle_id) return 0
+
+      return 30
+    }
+    return 2
+  };
   
 }
 
