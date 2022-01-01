@@ -9,6 +9,11 @@ class Damageable {
     this.life -= damage
     return this.life
   }
+  
+  removeDamage(damage: number): number {
+    this.life += damage
+    return this.life
+  }
 
   getLife(): number {
     return this.life

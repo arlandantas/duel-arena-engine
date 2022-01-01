@@ -2,6 +2,7 @@ import VehicleController from '../controllers/VehicleController';
 import Bullet from './Bullet';
 import Vehicle from './Vehicle';
 import Action from './Action';
+import Heart from './Heart';
 import { checkBoundariesOvelap } from '../helpers/math';
 import { Position } from '..';
 
@@ -9,6 +10,7 @@ class World {
 
   private vehicles: WorldVehicles = {};
   private bullets: Array<Bullet> = [];
+  private hearts: Array<Heart> = [];
   private vehicleControllers: Array<VehicleController> = [];
   private vehicleActionsOrder: Array<string> = [];
   private updateInterval: number|null = null;
@@ -28,6 +30,17 @@ class World {
   
   startUpdates() {
     this.updateInterval = setInterval(() => this.updateObjects(), 10);
+  }
+
+  addHeart(heart: Heart): void {
+    this.hearts.push(heart)
+  }
+
+  addHeartOnRandomPosition(): void {
+    this.addHeart(new Heart(
+      (Math.random() * (this.width - 20)) + 10,
+      (Math.random() * (this.height - 20)) + 10
+    ))
   }
 
   addVehicleController (controller: VehicleController): void {
@@ -110,6 +123,13 @@ class World {
         if (checkBoundariesOvelap(vehicleBoundaries, bulletBoundaries)) {
           vehicle.applyDamage(bullet.getDamageToApply(vehicle))
           this.bullets.splice(k, 1);
+        }
+      });
+      this.hearts.forEach((heart, k) => {
+        const heartBoundaries = heart.getBoundaries();
+        if (checkBoundariesOvelap(vehicleBoundaries, heartBoundaries)) {
+          vehicle.removeDamage(heart.getDamageToRemove(vehicle))
+          this.hearts.splice(k, 1);
         }
       });
       if (vehicle.getLife() <= 0) {
