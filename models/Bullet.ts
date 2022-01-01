@@ -42,10 +42,10 @@ class Bullet {
 
   getBoundaries(): Array<Position> {
     return [
-      { x: this.x - Bullet.RADIUS, y: this.y - Bullet.RADIUS },
-      { x: this.x + Bullet.RADIUS, y: this.y - Bullet.RADIUS },
-      { x: this.x + Bullet.RADIUS, y: this.y + Bullet.RADIUS },
-      { x: this.x - Bullet.RADIUS, y: this.y + Bullet.RADIUS },
+      { x: this.x, y: this.y - Bullet.RADIUS },
+      { x: this.x + Bullet.RADIUS, y: this.y },
+      { x: this.x, y: this.y + Bullet.RADIUS },
+      { x: this.x - Bullet.RADIUS, y: this.y },
     ];
   }
   
