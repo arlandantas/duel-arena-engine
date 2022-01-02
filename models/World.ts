@@ -85,6 +85,8 @@ class World {
 
       const vehicle = this.getVehicle(vehicle_id);
 
+      if (!vehicle) continue
+
       const result_action = vehicle.executeAction();
 
       if (result_action) {
@@ -137,7 +139,6 @@ class World {
         }
       });
       if (vehicle.getLife() <= 0) {
-        // TODO: Remove vehicleController
         this.removeVehicle(vehicle.getVehicleId())
       }
     });
@@ -162,7 +163,9 @@ class World {
 
   executeLoops() {
     this.vehicleControllers.forEach(controller => {
-      controller.loop();
+      if (this.vehicles[controller.getVehicleId()]) {
+        controller.loop();
+      }
     });
   }
 
@@ -182,6 +185,7 @@ class World {
 
     if (vehicle) {
       delete this.vehicles[vehicle_id]
+      this.vehicleControllers = this.vehicleControllers.filter(c => c.getVehicleId() != vehicle_id)
       return vehicle
     } else {
       throw new Error(`Vehicle not found with id: ${vehicle_id}`)
