@@ -10,6 +10,9 @@ class Vehicle extends Damageable {
   private y: number = 0;
   private speed: number = 0;
 
+  private maxX: number|null = null
+  private maxY: number|null = null
+
   private angle: number = 90;
   private angle_rad: number = 0;
   private angle_speed: number = 0;
@@ -55,6 +58,41 @@ class Vehicle extends Damageable {
   private setX (x: number) { this.x = x }
 
   private setY (y: number) { this.y = y }
+
+  setMaxBoundaries (x: number, y: number) {
+    this.maxX = x
+    this.maxY = y
+  }
+
+  private normalizeY () {
+    if (!this.maxY) return
+
+    const boundariesYs = this.getBoundaries().map(p => p.y)
+    const smallestY = Math.min(...boundariesYs)
+    if (smallestY < 0) {
+      this.y += Math.abs(smallestY)
+    }
+
+    const greatestY = Math.max(...boundariesYs)
+    if (greatestY > this.maxY) {
+      this.y -= greatestY - this.maxY
+    }
+  }
+
+  private normalizeX () {
+    if (!this.maxX) return
+
+    const boundariesXs = this.getBoundaries().map(p => p.x)
+    const smallestX = Math.min(...boundariesXs)
+    if (smallestX < 0) {
+      this.x += Math.abs(smallestX)
+    }
+
+    const greatestX = Math.max(...boundariesXs)
+    if (greatestX > this.maxX) {
+      this.x -= greatestX - this.maxX
+    }
+  }
 
   addAction (action: Action) { this.actions.push(action) };
 
@@ -163,6 +201,8 @@ class Vehicle extends Damageable {
       this.rotateGun();
       this.setGunAngleSpeed(0);
     }
+    this.normalizeX()
+    this.normalizeY()
   }
 
   private setAngle (angle: number) {

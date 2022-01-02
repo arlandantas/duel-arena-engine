@@ -169,6 +169,7 @@ class World {
     }
     this.vehicles[randomId] = vehicle;
     vehicle.setVehicleId(randomId)
+    vehicle.setMaxBoundaries(this.width, this.height)
     return randomId;
   }
 
