@@ -48,10 +48,11 @@ class World {
   }
 
   addVehicleController (controller: VehicleController): void {
-    controller.addListener((action: Action) => {
+    controller.setActionListener((action: Action) => {
       this.getVehicle(controller.getVehicleId()).addAction(action);
       this.vehicleActionsOrder.push(controller.getVehicleId());
     });
+    controller.setWorld(this);
     this.vehicleControllers.push(controller);
   }
 

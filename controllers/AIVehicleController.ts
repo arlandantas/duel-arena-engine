@@ -23,13 +23,15 @@ class AIVehicleController extends VehicleController {
       'rotateAnticlockwise',
       'rotateGunClockwise',
       'rotateGunAnticlockwise',
+      'getVehicle',
+      'getVehicles',
       'fire',
       `
       ${code}
 
       return {
-        setup: typeof setup == "function" ? setup : (() => { console.error("This IA has no setup method setted") }),
-        loop: typeof loop == "function" ? loop : (() => { console.error("This IA has no loop method setted") }),
+        setup: typeof setup == "function" ? setup : (() => { console.error("This AI has no setup method setted") }),
+        loop: typeof loop == "function" ? loop : (() => { console.error("This AI has no loop method setted") }),
       };
       `
     );
@@ -41,7 +43,9 @@ class AIVehicleController extends VehicleController {
       (speed?: number) => this.rotateAnticlockwise(speed),
       (speed?: number) => this.rotateGunClockwise(speed),
       (speed?: number) => this.rotateGunAnticlockwise(speed),
-      () => this.fire()
+      () => this.getVehicle(),
+      () => this.getVehicles(),
+      () => this.fire(),
     );
   }
 

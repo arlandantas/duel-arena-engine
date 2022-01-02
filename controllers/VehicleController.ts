@@ -1,21 +1,23 @@
-import { Vehicle } from "..";
 import Action from "../models/Action";
+import Vehicle from "../models/Vehicle";
+import World from "../models/World";
 
 class VehicleController {
 	private vehicle_id: string = '';
-	private actionListeners: Array<(a: Action) => void> = [];
+	private world: World|null = null;
+	private actionListener: ((a: Action) => void) = () => {};
 
 	constructor(vehicle_id: string) {
 		if (!vehicle_id) throw new Error('Vehicle id should not be empty');
 		this.vehicle_id = vehicle_id;
 	}
 
-	addListener(listener: (a: Action) => void) {
-		this.actionListeners.push(listener);
+	setActionListener(listener: (a: Action) => void) {
+		this.actionListener = listener;
 	}
 
-	private addAction(action: Action) {
-		this.actionListeners.forEach(listener => listener(action));
+	private addAction(action: Action): void {
+		this.actionListener(action);
 	};
 
 	loop() { }
@@ -48,6 +50,20 @@ class VehicleController {
 		this.addAction(new Action(Vehicle.ACTIONS.FIRE));
 	}
 
+	getVehicle(): Vehicle|null {
+		if (!this.world) return null
+
+		return this.world.getVehicle(this.getVehicleId())
+	}
+
+	getVehicles(): Array<Vehicle> {
+		if (!this.world) return []
+
+		return this.world.getVehicles()
+	}
+
+	setWorld(world: World) { this.world = world }
+	
 	getVehicleId(): string { return this.vehicle_id }
 }
 
