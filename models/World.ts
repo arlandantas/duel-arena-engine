@@ -43,6 +43,10 @@ class World {
     ))
   }
 
+  private removeHeart(index: number): Heart {
+    return this.hearts.splice(index, 1)[0];
+  }
+
   addVehicleController (controller: VehicleController): void {
     controller.addListener((action: Action) => {
       this.getVehicle(controller.getVehicleId()).addAction(action);
@@ -122,19 +126,19 @@ class World {
         const bulletBoundaries = bullet.getBoundaries();
         if (checkBoundariesOvelap(vehicleBoundaries, bulletBoundaries)) {
           vehicle.applyDamage(bullet.getDamageToApply(vehicle))
-          this.bullets.splice(k, 1);
+          this.removeBullet(k);
         }
       });
       this.hearts.forEach((heart, k) => {
         const heartBoundaries = heart.getBoundaries();
         if (checkBoundariesOvelap(vehicleBoundaries, heartBoundaries)) {
           vehicle.removeDamage(heart.getDamageToRemove(vehicle))
-          this.hearts.splice(k, 1);
+          this.removeHeart(k)
         }
       });
       if (vehicle.getLife() <= 0) {
         // TODO: Remove vehicleController
-        delete this.vehicles[vehicle.getVehicleId()]
+        this.removeVehicle(vehicle.getVehicleId())
       }
     });
 
@@ -146,12 +150,12 @@ class World {
         (bulletPosition.x > this.width + Bullet.RADIUS) ||
         (bulletPosition.y > this.height + Bullet.RADIUS)
       ) {
-        return this.bullets.splice(k, 1);
+        return this.removeBullet(k);
       }
 
       const bulletBoundaries = bullet.getBoundaries();
       if (checkBoundariesOvelap(this.getBoundaries(), bulletBoundaries)) {
-        return this.bullets.splice(k, 1);
+        return this.removeBullet(k);
       }
     });
   }
@@ -173,6 +177,17 @@ class World {
     return randomId;
   }
 
+  private removeVehicle(vehicle_id: string): Vehicle {
+    const vehicle = this.getVehicle(vehicle_id)
+
+    if (vehicle) {
+      delete this.vehicles[vehicle_id]
+      return vehicle
+    } else {
+      throw new Error(`Vehicle not found with id: ${vehicle_id}`)
+    }
+  }
+
   getVehicle (id: string): Vehicle {
     return this.vehicles[id];
   }
@@ -183,6 +198,10 @@ class World {
 
   addBullet (bullet: Bullet): void {
     this.bullets.push(bullet);
+  }
+
+  private removeBullet(index: number): Bullet {
+    return this.bullets.splice(index, 1)[0];
   }
 
   getBullets (): Array<Bullet> {
