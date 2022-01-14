@@ -1,10 +1,14 @@
 import VehicleController from './VehicleController';
 
 class AIVehicleController extends VehicleController {
-  private IAFunction: IACode;
+  private IAFunction?: IACode;
 
   constructor (vehicle_id: string, code: string) {
     super(vehicle_id);
+    this.setIAFunction(code);
+  }
+
+  setIAFunction(code: string): void {
     this.IAFunction = this.getAICodeFromString(code);
 
     if (this.IAFunction.setup) {
@@ -50,7 +54,7 @@ class AIVehicleController extends VehicleController {
   }
 
   loop() {
-    if (this.IAFunction.loop) {
+    if (this.IAFunction && this.IAFunction.loop) {
       this.IAFunction.loop();
     }
   }
