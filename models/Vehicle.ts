@@ -1,6 +1,7 @@
 import { degreeToRad, normalizeDegrees, rotatePoint } from "../helpers/math";
 import Position from "../interfaces/Position";
 import Damageable from "../interfaces/Damageable";
+import Angle from "../interfaces/Angle";
 import Action from "./Action";
 import World from "./World";
 import Bullet from "./Bullet";
@@ -13,9 +14,14 @@ class Vehicle extends Damageable {
   private maxX: number|null = null
   private maxY: number|null = null
 
-  private angle: number = 90;
-  private angle_rad: number = 0;
   private angle_speed: number = 0;
+  private angle: Angle = {
+    degree: 90,
+    radian: 0,
+    sin: 1,
+    cos: 0
+  };
+
   
   private gun_angle: number = 0;
   private gun_angle_rad: number = 0;
@@ -144,10 +150,10 @@ class Vehicle extends Damageable {
             x: this.x + Vehicle.SIZE.WIDTH / 2,
             y: this.y + Vehicle.SIZE.HEIGHT / 2
           },
-          this.gun_angle_rad + this.angle_rad
+          this.gun_angle_rad + this.angle.radian
         );
         return new Action(World.ACTIONS.ADD_BULLET, {
-          angle: this.gun_angle + this.angle,
+          angle: this.gun_angle + this.angle.degree,
           x: outPoint.x,
           y: outPoint.y,
           speed: 2
@@ -168,22 +174,22 @@ class Vehicle extends Damageable {
       rotatePoint(
         this.getPosition(),
         originPosition,
-        this.angle_rad
+        this.angle.radian
       ),
       rotatePoint(
         { x: this.x + Vehicle.SIZE.WIDTH, y: this.y },
         originPosition,
-        this.angle_rad
+        this.angle.radian
       ),
       rotatePoint(
         { x: this.x + Vehicle.SIZE.WIDTH, y: this.y + Vehicle.SIZE.HEIGHT },
         originPosition,
-        this.angle_rad
+        this.angle.radian
       ),
       rotatePoint(
         { x: this.x, y: this.y + Vehicle.SIZE.HEIGHT },
         originPosition,
-        this.angle_rad
+        this.angle.radian
       ),
     ];
   }
@@ -206,8 +212,13 @@ class Vehicle extends Damageable {
   }
 
   private setAngle (angle: number) {
-    this.angle = normalizeDegrees(angle);
-    this.angle_rad = degreeToRad(this.angle);
+    const angleRad = degreeToRad(angle);
+    this.angle = {
+      degree: normalizeDegrees(angle),
+      radian: angleRad,
+      sin: Math.sin(angleRad),
+      cos: Math.cos(angleRad)
+    };
   }
 
   private setGunAngle (gun_angle: number) {
@@ -216,12 +227,12 @@ class Vehicle extends Damageable {
   }
 
   move () {
-    this.setY(this.y + (Math.sin(this.angle_rad) * this.speed));
-    this.setX(this.x + (Math.cos(this.angle_rad) * this.speed));
+    this.setY(this.y + (this.angle.sin * this.speed));
+    this.setX(this.x + (this.angle.cos * this.speed));
   }
 
   rotate () {
-    this.setAngle(this.angle + this.angle_speed)
+    this.setAngle(this.angle.degree + this.angle_speed);
   }
 
   rotateGun () {
@@ -230,7 +241,7 @@ class Vehicle extends Damageable {
 
   getPosition(): Position { return { x: this.x, y: this.y } }
   getSpeed() { return this.speed }
-  getAngle() { return this.angle }
+  getAngle() { return this.angle.degree }
   getAngleSpeed() { return this.angle_speed }
   getGunAngle() { return this.gun_angle }
   getGunAngleSpeed() { return this.gun_angle_speed }
