@@ -3,11 +3,12 @@ import Bullet from './Bullet';
 import Vehicle from './Vehicle';
 import Action from './Action';
 import Heart from './Heart';
+import FPSCounter from './FPSCounter';
 import { checkBoundariesOvelap } from '../helpers/math';
 import { Position } from '..';
 
 class World {
-
+  private fpsCounter: FPSCounter = new FPSCounter();
   private vehicles: WorldVehicles = {};
   private bullets: Array<Bullet> = [];
   private hearts: Array<Heart> = [];
@@ -118,8 +119,13 @@ class World {
     });
 
     this.checkCollisions();
+    this.fpsCounter.addTickToCurrentSecond();
 
     this.updatingObjects = false;
+  }
+
+  getFPSLastSecond(): number {
+    return this.fpsCounter.getLastSecondCounter();
   }
 
   checkCollisions() {
