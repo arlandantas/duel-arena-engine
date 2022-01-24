@@ -1,4 +1,5 @@
 import { Position } from "..";
+import Angle from "../interfaces/Angle";
 
 function degreeToRad(degree: number): number {
   return Math.PI * degree / 180;
@@ -10,10 +11,10 @@ function normalizeDegrees(degree: number): number {
   return angle;
 }
 
-function rotatePoint(point: Position, origin: Position, radAngle: number): Position {
+function rotatePoint(point: Position, origin: Position, angle: Angle): Position {
   return {
-      x: Math.cos(radAngle) * (point.x-origin.x) - Math.sin(radAngle) * (point.y-origin.y) + origin.x,
-      y: Math.sin(radAngle) * (point.x-origin.x) + Math.cos(radAngle) * (point.y-origin.y) + origin.y
+      x: angle.cos * (point.x-origin.x) - angle.sin * (point.y-origin.y) + origin.x,
+      y: angle.sin * (point.x-origin.x) + angle.cos * (point.y-origin.y) + origin.y
   };
 }
 

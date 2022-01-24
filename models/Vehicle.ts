@@ -15,13 +15,9 @@ class Vehicle extends Damageable {
   private maxY: number|null = null
 
   private angle_speed: number = 0;
-  private angle: Angle = {
-    degree: 90,
-    radian: 0,
-    sin: 1,
-    cos: 0
-  };
+  private angle: Angle;
 
+  private output_angle: Angle;
   
   private gun_angle: number = 0;
   private gun_angle_rad: number = 0;
@@ -38,11 +34,12 @@ class Vehicle extends Damageable {
   private actions: Array<Action> = [];
 
   constructor (x: number = 0, y: number = 0, angle: number = 90, colors?: VehicleColors) {
-    super(100)
-    this.setX(x)
-    this.setY(y)
-    this.setAngle(angle)
-    this.setGunAngle(0)
+    super(100);
+    this.angle = new Angle(90);
+    this.output_angle = new Angle(90);
+    this.setX(x);
+    this.setY(y);
+    this.setGunAngle(0);
     this.colors = colors ?? this.colors;
   }
 
@@ -150,7 +147,7 @@ class Vehicle extends Damageable {
             x: this.x + Vehicle.SIZE.WIDTH / 2,
             y: this.y + Vehicle.SIZE.HEIGHT / 2
           },
-          this.gun_angle_rad + this.angle.radian
+          this.output_angle
         );
         return new Action(World.ACTIONS.ADD_BULLET, {
           angle: this.gun_angle + this.angle.degree,
@@ -174,22 +171,22 @@ class Vehicle extends Damageable {
       rotatePoint(
         this.getPosition(),
         originPosition,
-        this.angle.radian
+        this.angle
       ),
       rotatePoint(
         { x: this.x + Vehicle.SIZE.WIDTH, y: this.y },
         originPosition,
-        this.angle.radian
+        this.angle
       ),
       rotatePoint(
         { x: this.x + Vehicle.SIZE.WIDTH, y: this.y + Vehicle.SIZE.HEIGHT },
         originPosition,
-        this.angle.radian
+        this.angle
       ),
       rotatePoint(
         { x: this.x, y: this.y + Vehicle.SIZE.HEIGHT },
         originPosition,
-        this.angle.radian
+        this.angle
       ),
     ];
   }
@@ -212,18 +209,18 @@ class Vehicle extends Damageable {
   }
 
   private setAngle (angle: number) {
-    const angleRad = degreeToRad(angle);
-    this.angle = {
-      degree: normalizeDegrees(angle),
-      radian: angleRad,
-      sin: Math.sin(angleRad),
-      cos: Math.cos(angleRad)
-    };
+    this.angle.changeAngle(angle);
+    this.setOutputAngle(angle + this.gun_angle);
+  }
+
+  private setOutputAngle (angle: number) {
+    const outputAngleRad = this.output_angle.changeAngle(angle);
   }
 
   private setGunAngle (gun_angle: number) {
     this.gun_angle = normalizeDegrees(gun_angle);
     this.gun_angle_rad = degreeToRad(this.gun_angle);
+    this.setOutputAngle(gun_angle + this.angle.degree);
   }
 
   move () {
