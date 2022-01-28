@@ -30,7 +30,14 @@ class World {
   };
   
   startUpdates() {
+    this.stopUpdates();
     this.updateInterval = setInterval(() => this.updateObjects(), 10);
+  }
+  
+  stopUpdates () {
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval)
+    }
   }
 
   addHeart(heart: Heart): void {
