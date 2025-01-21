@@ -1,0 +1,9 @@
+[package]
+name = "duel-arena-engine"
+version = "1.0.0"
+description = "This project makes all calculations - Vehicles, bullets and coins positions - Users points - IA interactions"
+authors = ["Arlan Dantas"]
+license = "ISC"
+
+[dependencies]
+# Add any dependencies here
